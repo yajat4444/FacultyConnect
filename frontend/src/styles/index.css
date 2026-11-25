@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  h1, h2, h3, h4 {
+    font-family: theme("fontFamily.display");
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: theme("colors.ink.DEFAULT");
+  }
+  body {
+    font-feature-settings: "kern" 1;
+    background-color: theme("colors.paper.DEFAULT");
+    color: theme("colors.ink.DEFAULT");
+  }
+  /* Text selection uses a soft teal wash */
+  ::selection {
+    background: theme("colors.teal.light");
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid theme("colors.teal.DEFAULT");
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ─── Typography helpers ──────────────────────────────────── */
+  .section-mark {
+    @apply font-display text-sm italic;
+    color: theme("colors.teal.DEFAULT");
+  }
+
+  .rule {
+    @apply border-t border-rule;
+  }
+
+  /* Animated underline link */
+  .link-underline {
+    position: relative;
+    text-decoration: none;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ─── Buttons ─────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 font-sans text-sm font-medium tracking-wide transition-colors duration-150;
+    background-color: theme("colors.teal.DEFAULT");
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background-color: theme("colors.teal.dark");
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 border px-5 py-2.5 font-sans text-sm font-medium tracking-wide transition-colors duration-150;
+    border-color: theme("colors.teal.DEFAULT");
+    color: theme("colors.teal.DEFAULT");
+    background: transparent;
+  }
+  .btn-secondary:hover {
+    background-color: theme("colors.teal.DEFAULT");
+    color: #fff;
+  }
+
+  .btn-quiet {
+    @apply inline-flex items-center gap-1.5 border border-rule bg-white px-3 py-1.5 font-sans text-xs font-medium text-ink-soft hover:border-ink hover:text-ink transition-colors duration-150;
+  }
+  .btn-danger {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-medium transition-colors duration-150;
+    border: 1px solid rgba(59,159,159,0.4);
+    color: theme("colors.teal.dark");
+  }
+  .btn-danger:hover {
+    background-color: theme("colors.teal.DEFAULT");
+    color: #fff;
+  }
+
+  /* ─── Form inputs ─────────────────────────────────────────── */
+  .field {
+    @apply block w-full border border-edge bg-white px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink-faint transition duration-150 hover:border-ink-faint focus:outline-none;
+    box-shadow: inset 0 1px 2px rgba(15, 32, 32, 0.04);
+  }
+  .field:focus {
+    border-color: #3B9F9F;
+    box-shadow: 0 0 0 3px rgba(59,159,159,0.15);
+  }
+  .field:user-invalid {
+    border-color: #c0392b;
+    background-color: #fff5f5;
+  }
+  .field:disabled {
+    @apply bg-wash text-ink-faint cursor-not-allowed;
+  }
+  select.field {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233A5252' stroke-width='1.6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+  }
+  textarea.field {
+    min-height: 7rem;
+    resize: vertical;
+    line-height: 1.55;
+  }
+  .field-label {
+    @apply block font-sans text-xs font-semibold uppercase tracking-[0.08em] mb-2;
+    color: theme("colors.ink.soft");
+  }
+  .field-label.req::after {
+    content: " *";
+    color: theme("colors.teal.DEFAULT");
+  }
+  .field-hint {
+    @apply mt-1.5 text-xs text-ink-faint;
+  }
+
+  /* ─── Panels ──────────────────────────────────────────────── */
+  .panel {
+    @apply border border-edge bg-paper-raised;
+    box-shadow: 0 1px 0 rgba(15, 32, 32, 0.05);
+  }
+  .panel-head {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-edge bg-wash px-6 py-4;
+  }
+  .panel-body {
+    @apply p-6 bg-paper-raised;
+  }
+  .subform {
+    @apply mt-6 border border-dashed border-edge bg-white p-5;
+  }
+  .subform-title {
+    @apply mb-4 font-sans text-xs font-semibold uppercase tracking-[0.1em];
+    color: theme("colors.teal.DEFAULT");
+  }
+  .entry-list {
+    @apply border border-edge bg-white divide-y divide-edge/60;
+  }
+
+  /* ─── Tab navigation ──────────────────────────────────────── */
+  .tab-nav {
+    @apply flex gap-6 sm:gap-8 border-b border-rule overflow-x-auto text-sm;
+  }
+  .tab-button {
+    @apply pb-3 font-sans transition-colors whitespace-nowrap border-b-2 font-medium;
+  }
+  .tab-button-active {
+    @apply -mb-px;
+    border-color: theme("colors.teal.DEFAULT");
+    color: theme("colors.ink.DEFAULT");
+  }
+  .tab-button-inactive {
+    @apply border-transparent -mb-px;
+    color: theme("colors.ink.faint");
+  }
+  .tab-button-inactive:hover {
+    color: theme("colors.ink.DEFAULT");
+  }
+
+  /* ─── Card ────────────────────────────────────────────────── */
+  .card {
+    @apply rounded-xl border border-edge/60 bg-paper-raised shadow-sm transition-all duration-200 p-5;
+  }
+  .card:hover {
+    @apply shadow-md;
+    border-color: theme("colors.teal.DEFAULT");
+  }
+
+  /* ─── Decorative teal accent strip ───────────────────────── */
+  .accent-left {
+    border-left: 3px solid theme("colors.teal.DEFAULT");
+    padding-left: 1rem;
+  }
+}
+
+/* ─── Announcement ticker ─────────────────────────────────── */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker-scroll 32s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ─── Subtle geometric hero background ───────────────────── */
+.hero-mesh {
+  background-color: #0F2020;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 80% 40%, rgba(59,159,159,0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 10% 80%, rgba(131,196,196,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 50% 10%, rgba(247,252,252,0.08) 0%, transparent 60%);
+}
+
+/* Floating teal ring decoration (pure CSS, no SVG needed) */
+.ring-deco {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(59,159,159,0.25);
+  pointer-events: none;
+}
