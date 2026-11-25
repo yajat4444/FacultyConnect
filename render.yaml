@@ -1,28 +1,21 @@
-# Render Blueprint: deploys the API (with a persistent disk for the database and uploads).
-# The frontend is a static site: see frontend/vercel.json (or Netlify's frontend/public/_redirects).
+# Render Blueprint: deploys the API on the 100% Free plan (no credit card required).
 services:
   - type: web
     name: facultyconnect-api
     runtime: node
     rootDir: backend
-    plan: starter            # persistent disks need a paid instance
-    buildCommand: npm ci
+    plan: free
+    buildCommand: npm install && npm run seed
     startCommand: node server.js
     healthCheckPath: /api/health
-    disk:
-      name: facultyconnect-data
-      mountPath: /var/data
-      sizeGB: 2
     envVars:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
         generateValue: true
-      - key: DB_PATH
-        value: /var/data/facultyconnect.sqlite3
-      - key: UPLOADS_DIR
-        value: /var/data/uploads
+      - key: ALLOW_DEMO_SEED
+        value: "1"
       - key: TRUST_PROXY
         value: "1"
       - key: CLIENT_ORIGIN
-        sync: false          # set to your frontend URL, e.g. https://facultyconnect.vercel.app
+        sync: false
